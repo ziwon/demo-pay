@@ -52,11 +52,15 @@ def cli(info: Info, payloads: click.File):
 
 
 async def run(payloads):
+    from .manager import Manager
+
     queue = asyncio.Queue()
-    consumer = asyncio.ensure_future(consume(queue))
+    manager = Manager()
+    consumer = asyncio.ensure_future(consume(queue, manager))
     await produce(queue, payloads)
     await queue.join()
     consumer.cancel()
+    print(manager)
 
 
 async def produce(queue, payloads):
@@ -65,11 +69,9 @@ async def produce(queue, payloads):
         await queue.put(message)
 
 
-async def consume(queue):
-    from .manager import Manager
-
+async def consume(queue, manager):
     while True:
         message = await queue.get()
-        event = EventFactory.create(message, Manager())
+        event = EventFactory.create(message, manager)
         event.handle()
         queue.task_done()

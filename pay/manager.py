@@ -4,10 +4,16 @@
 메모리 저장소 또는 외부 저장소로 확장 가능하다.
 """
 
+from dataclasses import dataclass, field
+from typing import MutableMapping
+from .creditcard import CreditCard
 from .utils import Singleton
 
 
+@dataclass
 class Manager(metaclass=Singleton):
+    cards: MutableMapping[str, CreditCard] = field(default_factory=dict)
+
     def add(self, name, card_number, limit):
         """
         <Add>는 새로운 신용카드에 이름, 카드번호와 한도액을 전달받습니다.
@@ -15,7 +21,9 @@ class Manager(metaclass=Singleton):
         - 신용카드 번호는 Luhn 10 알고리즘으로 검증 받아야 합니다.
         - 새로운 카드는 $0 잔액에서 시작합니다.
         """
-        print(name, card_number, limit)
+        self.cards[name] = CreditCard(
+            name=name, card_number=card_number, limit=int(limit)
+        )
 
     def charge(self, name, amount):
         """
@@ -24,7 +32,8 @@ class Manager(metaclass=Singleton):
         - Charge는 한도액을 넘어서면 결제 거부가 되고 무시됩니다.
         - Charge는 Luhn 10 알고리즘으로 검증에 실패 하면 무시됩니다.
         """
-        print(name, amount)
+        card = self.cards[name]
+        card.charge(amount)
 
     def credit(self, name, amount):
         """
@@ -33,4 +42,5 @@ class Manager(metaclass=Singleton):
         - Credit는 잔고가 $0미만으로 떨어지면 마이너스 잔액이 생깁니다.
         - Credit는 Luhn 10 알고리즘으로 검증에 실패 하면 무시됩니다.
         """
-        print(name, amount)
+        card = self.cards[name]
+        card.credit(amount)
