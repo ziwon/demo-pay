@@ -1,5 +1,5 @@
+import logging.config
 from dataclasses import dataclass
-
 
 @dataclass
 class CreditCard:
@@ -11,12 +11,24 @@ class CreditCard:
     # def __post_init__(self):
     # if not self.luhn_checksum(self.card_number):
     # raise Exception("Not a card number")
+    #
+    def is_valid_luhn(self):
+        return True
 
     def charge(self, amount):
-        self.balance += int(amount)
+        if not self.is_valid_luhn():
+            return self.balance
+
+        if self.balance + amount > self.limit:
+            return self.balance
+
+        self.balance += amount
 
     def credit(self, amount):
-        self.balance -= int(amount)
+        if not self.is_valid_luhn():
+            return self.balance
+
+        self.balance -= amount
 
     @staticmethod
     def luhn_checksum(card_number):

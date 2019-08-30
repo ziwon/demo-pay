@@ -3,11 +3,12 @@
 
 메모리 저장소 또는 외부 저장소로 확장 가능하다.
 """
+import logging
 
 from dataclasses import dataclass, field
 from typing import MutableMapping
-from .creditcard import CreditCard
-from .utils import Singleton
+from pay.creditcard import CreditCard
+from pay.utils import Singleton
 
 
 @dataclass
@@ -24,6 +25,12 @@ class Manager(metaclass=Singleton):
         self.cards[name] = CreditCard(
             name=name, card_number=card_number, limit=int(limit)
         )
+
+        LOG = logging.getLogger(__name__)
+        print(LOG)
+        LOG.info("test")
+
+        LOG.info("add")
 
     def charge(self, name, amount):
         """
