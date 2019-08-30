@@ -9,14 +9,10 @@ from dataclasses import dataclass
 from typing import TypeVar, MutableMapping, List, Callable, Union
 
 from pay.manager import Manager
+from pay.logging import LOG
 
-logging.config.fileConfig("logging.ini")
-LOG = logging.getLogger(__name__)
-print(LOG)
 
 T = TypeVar("T")
-
-LOG.info("test")
 
 
 @dataclass

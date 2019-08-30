@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging.config
 import click
 
+from pay.logging import LOG
 from pay.manager import Manager
 from pay.events import EventFactory
-
-
-logging.config.fileConfig("logging.ini")
-LOG = logging.getLogger(__name__)
-print(LOG)
 
 
 @click.command()
