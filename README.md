@@ -2,12 +2,23 @@
 
 신용카드 결제 시스템
 
+## 기본 사항
+
+기본적인 구동을 위해서 `python3.7`이 설치되어 있어야 합니다. 또한 `virtualenv`가 명령어 패스에 잡혀 있어야 합니다. (python 3.7 설치에 대한 설명은 생략합니다. 이상, [pyenv](https://github.com/pyenv/pyenv) 참조)
+
 ## 설치
 
-먼저 `make venv` 명령어로 파이썬 가상환경을 설치합니다. 
+`make venv` 명령어로 파이썬 가상환경을 설치합니다. 
 
 ```sh
 $ make venv
+New python executable in /Users/luno/Workspace/demo-pay/venv/bin/python3.7
+Not overwriting existing python script /Users/luno/Workspace/demo-pay/venv/bin/python (you must use /Users/luno/Workspace/demo-pay/venv/bin/python3.7)
+Installing setuptools, pip, wheel...
+done.
+
+To activate the environment, use the following command:
+
 source venv/bin/activate
 
 Once activated, you can use the install target to install dependencies:
@@ -43,7 +54,31 @@ $ make lint
 $ make build
 ```
 
-## 설명
+### pyenv 및 direnv
+
+실제 개발환경은 [`pyenv`](https://github.com/pyenv/pyenv), [`pyenv-virtualenv`](https://github.com/pyenv/pyenv-virtualenv), [`direnv`](https://direnv.net/) 등이 시스템에 이미 설치되어 있다고 가정합니다. 
+
+그러면 다음과 같이 디렉토리 진입시마다 `.envrc`, `.python-verion`, `.python-virtualenv`에 기술된 내용을 따라 필요한 가상환경, 환경변수 등을 다음과 같이 자동으로 설정하게 됩니다.
+
+- 디렉토리 진입시
+
+```sh
+cd demo-pay && direnv allow
+direnv: loading .envrc
+Reading .python-version...
+direnv: using python 3.7.3
+Reading .python-virtualenv...
+direnv: export +VIRTUAL_ENV ~PATH
+```
+- 디렉토리 진입 해제
+
+```sh
+$ cd -
+~/Workspace
+direnv: unloading
+```
+
+## 프로젝트 설명
 
 ### 입력
 
