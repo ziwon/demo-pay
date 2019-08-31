@@ -69,12 +69,13 @@ $ pay < input.txt
 
 다음과 같이 로그를 사용하여 입력의 읽고 처리하는 것들을 나타내었습니다.
 
-```
+```shell
 $ pay < input.txt
 2019-08-31 20:26:15,563 - cli.py(12) - DEBUG: input: <_io.BufferedReader name='<stdin>'>
 2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Jane', params=[4111111111111111, 1000])
 2019-08-31 20:26:15,563 - manager.py(24) - INFO: adding - Jane, 4111111111111111, $1000
-2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Jane: $0                                                                                                                                                                                                               2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Evan', params=[5454545454545454, 3000])
+2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Jane: $0                                                                                                                                                                                                              
+2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Evan', params=[5454545454545454, 3000])
 2019-08-31 20:26:15,563 - manager.py(24) - INFO: adding - Evan, 5454545454545454, $3000
 2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Evan: $0
 2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Daniel', params=[1234567890123456, 2000])
