@@ -20,6 +20,7 @@ class CreditCard:
 
     @staticmethod
     def luhn_valid(card_number) -> bool:
+        # stolen from https://stackoverflow.com/questions/21079439/implementation-of-luhn-formula
         r = [int(ch) for ch in str(card_number)][::-1]
         return (sum(r[0::2]) + sum(sum(divmod(d * 2, 10)) for d in r[1::2])) % 10 == 0
 
@@ -48,5 +49,11 @@ class CreditCard:
         self.balance -= amount
         return True
 
+    def print_balance(self) -> str:
+        if self.balance == CreditCard.INVALID_CREDIT_CARD_NUMBER:
+            return self.balance
+        else:
+            return "$%s" % self.balance
+
     def get_status(self) -> str:
-        return f"{self.name}: ${self.balance}"
+        return f"{self.name}: {self.print_balance()}"

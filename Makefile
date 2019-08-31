@@ -46,7 +46,7 @@ venv :
 	@echo
 	@echo Once activated, you can use the 'install' target to install dependencies:
 	@echo
-	$(call colorecho, $(GREEN), "source venv/bin/activate")
+	$(call colorecho, $(GREEN), "make install")
 
 install:
 	pip install -r requirements.txt
