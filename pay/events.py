@@ -1,7 +1,3 @@
-"""
-이벤트 클래스를 정의한다.
-
-"""
 import logging.config
 
 from abc import abstractmethod
@@ -22,6 +18,12 @@ class Event:
     params: List[T]
 
     def __post_init__(self):
+        if None in (self.kind, self.name):
+            raise ValueError(f"Invalid value - kind: {self.kind}, name: {self.name}")
+
+        if len(self.params) == 0:
+            raise ValueError(f"Empty params - params: {self.params}")
+
         params: List[str] = []
         self.params = list(
             map(
@@ -30,12 +32,12 @@ class Event:
             )
         )
 
+    def set_manager(self, manager: Manager) -> None:
+        self.manager = manager
+
     @abstractmethod
     def handle(self) -> None:
         raise NotImplementedError
-
-    def set_manager(self, manager: Manager) -> None:
-        self.manager = manager
 
     def get_params(self) -> Union[List[T], T]:
         return self.params[0] if len(self.params) == 1 else self.params
@@ -58,6 +60,7 @@ class EventFactory:
     def create(cls, message: str, manager: Manager) -> Event:
         kind, name, *params = message.split()
         event: Event = cls._event.get(kind)
+
         if event:
             event = event(kind, name, params)
             event.set_manager(manager)
@@ -68,7 +71,7 @@ class EventFactory:
 @EventFactory.register("Add")
 class AddEvent(Event):
     def handle(self) -> None:
-        LOG.info(self)
+        LOG.debug(self)
         card_number, limit = self.get_params()
         self.manager.add(self.name, card_number, limit)
 
@@ -76,7 +79,7 @@ class AddEvent(Event):
 @EventFactory.register("Charge")
 class ChargeEvent(Event):
     def handle(self) -> None:
-        LOG.info(self)
+        LOG.debug(self)
         amount = self.get_params()
         self.manager.charge(self.name, amount)
 
@@ -84,6 +87,6 @@ class ChargeEvent(Event):
 @EventFactory.register("Credit")
 class CreditEvent(Event):
     def handle(self) -> None:
-        LOG.info(self)
+        LOG.debug(self)
         amount = self.get_params()
         self.manager.credit(self.name, amount)

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import click
 
 from pay.logging import LOG
@@ -12,6 +9,7 @@ from pay.events import EventFactory
 @click.argument("payloads", type=click.File("rb"), default="-")
 def cli(payloads: click.File):
 
+    LOG.debug(f"input: {payloads}")
     manager = Manager()
 
     for payload in payloads:
@@ -19,8 +17,4 @@ def cli(payloads: click.File):
         event = EventFactory.create(message, manager)
         event.handle()
 
-    LOG.info(manager)
-
-
-if __name__ == "__main__":
-    cli()
+    LOG.debug(f"output: {manager.status()}")

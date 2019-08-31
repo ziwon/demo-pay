@@ -17,15 +17,6 @@ endef
 build:
 	pip install --editable .
 
-run:
-	$(CLI_NAME) run
-
-submit:
-	$(CLI_NAME) submit
-
-freeze:
-	pip freeze > requirements.txt
-
 lint:
 	pylint $(PROJ_SLUG)
 
@@ -38,25 +29,11 @@ quicktest:
 coverage: lint
 	py.test --cov-report html --cov=$(PROJ_SLUG) tests/
 
-docs: coverage
-	mkdir -p docs/source/_static
-	mkdir -p docs/source/_templates
-	cd docs && $(MAKE) html
-	pandoc --from=markdown --to=rst --output=README.rst README.md
-
-answers:
-	cd docs && $(MAKE) html
-	open docs/build/html/index.html
-
-package: clean docs
+package: clean
 	python setup.py sdist
-
-publish: package
-	twine upload dist/*
 
 clean :
 	rm -rf dist \
-	rm -rf docs/build \
 	rm -rf *.egg-info
 	coverage erase
 

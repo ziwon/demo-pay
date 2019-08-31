@@ -1,51 +1,52 @@
 import logging.config
+from typing import ClassVar
 from dataclasses import dataclass
+
+from pay.logging import LOG
+
 
 @dataclass
 class CreditCard:
     name: str
-    card_number: str
+    card_number: int
     balance: int = 0
     limit: int = 0
 
-    # def __post_init__(self):
-    # if not self.luhn_checksum(self.card_number):
-    # raise Exception("Not a card number")
-    #
-    def is_valid_luhn(self):
-        return True
+    INVALID_CREDIT_CARD_NUMBER: ClassVar[str] = "error"
 
-    def charge(self, amount):
-        if not self.is_valid_luhn():
-            return self.balance
+    def __post_init__(self) -> None:
+        if not self.luhn_valid(self.card_number):
+            LOG.warn(f"Invalid card number: {self.card_number}")
+
+    @staticmethod
+    def luhn_valid(card_number) -> bool:
+        r = [int(ch) for ch in str(card_number)][::-1]
+        return (sum(r[0::2]) + sum(sum(divmod(d * 2, 10)) for d in r[1::2])) % 10 == 0
+
+    def charge(self, amount) -> bool:
+        if not self.luhn_valid(self.card_number):
+            LOG.warn(f"Invalid card number: {self.card_number}")
+            self.balance = CreditCard.INVALID_CREDIT_CARD_NUMBER
+            return False
 
         if self.balance + amount > self.limit:
-            return self.balance
+            LOG.warn(
+                f"Charging ${amount} to balance ${self.balance} is exceeded the limit: ${self.limit}"
+            )
+            return False
 
         self.balance += amount
 
-    def credit(self, amount):
-        if not self.is_valid_luhn():
-            return self.balance
+        return True
+
+    def credit(self, amount) -> bool:
+        if not self.luhn_valid(self.card_number):
+            LOG.warn(f"Invalid card number: {self.card_number}")
+            self.balance = CreditCard.INVALID_CREDIT_CARD_NUMBER
+            return False
 
         self.balance -= amount
+        return True
 
-    @staticmethod
-    def luhn_checksum(card_number):
-        """
-        Python implementation of Luhn algorithm.
-        https://en.wikipedia.org/wiki/Luhn_algorithm
-        :param card_number - string
-        """
-
-        def digits_of(n):
-            return [int(d) for d in str(n)]
-
-        digits = digits_of(card_number)
-        odd_digits = digits[-1::-2]
-        even_digits = digits[-2::-2]
-        checksum = 0
-        checksum += sum(odd_digits)
-        for d in even_digits:
-            checksum += sum(digits_of(d * 2))
-        return checksum % 10
+    def get_status(self) -> str:
+        return f"{self.name}: ${self.balance}"
