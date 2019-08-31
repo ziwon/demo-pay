@@ -102,39 +102,49 @@ $ pay < input.txt
 
 ### 출력
 
-다음과 같이 로그를 사용하여 입력의 읽고 처리하는 것들을 나타내었습니다.
+다음과 같이 입력과 출력 내용은 표준 출력스트림으로, 세부적인 처리 내용은 로그를 통해 나타내었습니다.
 
 ```shell
 $ pay < input.txt
-2019-08-31 20:26:15,563 - cli.py(12) - DEBUG: input: <_io.BufferedReader name='<stdin>'>
-2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Jane', params=[4111111111111111, 1000])
-2019-08-31 20:26:15,563 - manager.py(24) - INFO: adding - Jane, 4111111111111111, $1000
-2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Jane: $0                                                                                                                                                                                                              
-2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Evan', params=[5454545454545454, 3000])
-2019-08-31 20:26:15,563 - manager.py(24) - INFO: adding - Evan, 5454545454545454, $3000
-2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Evan: $0
-2019-08-31 20:26:15,563 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Daniel', params=[1234567890123456, 2000])
-2019-08-31 20:26:15,563 - manager.py(24) - INFO: adding - Daniel, 1234567890123456, $2000
-2019-08-31 20:26:15,563 - creditcard.py(19) - WARNING: Invalid card number: 1234567890123456
-2019-08-31 20:26:15,563 - manager.py(29) - INFO: added - Daniel: $0
-2019-08-31 20:26:15,563 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Jane', params=[500])
-2019-08-31 20:26:15,564 - manager.py(44) - INFO: charging - Jane: $500
-2019-08-31 20:26:15,564 - manager.py(49) - INFO: charged - Jane: $500
-2019-08-31 20:26:15,564 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Jane', params=[800])
-2019-08-31 20:26:15,564 - manager.py(44) - INFO: charging - Jane: $800
-2019-08-31 20:26:15,564 - creditcard.py(35) - WARNING: Charging $800 to balance $500 is exceeded the limit: $1000
-2019-08-31 20:26:15,564 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Evan', params=[7])
-2019-08-31 20:26:15,564 - manager.py(44) - INFO: charging - Evan: $7
-2019-08-31 20:26:15,564 - manager.py(49) - INFO: charged - Evan: $7
-2019-08-31 20:26:15,564 - events.py(90) - DEBUG: CreditEvent(kind='Credit', name='Evan', params=[100])
-2019-08-31 20:26:15,564 - manager.py(60) - INFO: crediting - Evan: $100
-2019-08-31 20:26:15,564 - manager.py(66) - INFO: creditied- Evan: $-93
-2019-08-31 20:26:15,564 - events.py(90) - DEBUG: CreditEvent(kind='Credit', name='Daniel', params=[200])
-2019-08-31 20:26:15,564 - manager.py(60) - INFO: crediting - Daniel: $200
-2019-08-31 20:26:15,564 - creditcard.py(45) - WARNING: Invalid card number: 1234567890123456
-2019-08-31 20:26:15,564 - cli.py(20) - DEBUG: output: Jane: $500
+2019-08-31 21:41:53,327 - cli.py(12) - DEBUG: input: <_io.BufferedReader name='input.txt'>
+Add Jane 4111111111111111 $1000
+2019-08-31 21:41:53,327 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Jane', params=[4111111111111111, 1000])
+2019-08-31 21:41:53,327 - manager.py(24) - INFO: adding - Jane, 4111111111111111, $1000
+2019-08-31 21:41:53,327 - manager.py(29) - INFO: added - Jane: $0
+Add Evan 5454545454545454 $3000
+2019-08-31 21:41:53,327 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Evan', params=[5454545454545454, 3000])
+2019-08-31 21:41:53,327 - manager.py(24) - INFO: adding - Evan, 5454545454545454, $3000
+2019-08-31 21:41:53,327 - manager.py(29) - INFO: added - Evan: $0
+Add Daniel 1234567890123456 $2000
+2019-08-31 21:41:53,328 - events.py(74) - DEBUG: AddEvent(kind='Add', name='Daniel', params=[1234567890123456, 2000])
+2019-08-31 21:41:53,328 - manager.py(24) - INFO: adding - Daniel, 1234567890123456, $2000
+2019-08-31 21:41:53,328 - creditcard.py(19) - WARNING: Invalid card number: 1234567890123456
+2019-08-31 21:41:53,328 - manager.py(29) - INFO: added - Daniel: $0
+Charge Jane $500
+2019-08-31 21:41:53,328 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Jane', params=[500])
+2019-08-31 21:41:53,328 - manager.py(44) - INFO: charging - Jane: $500
+2019-08-31 21:41:53,328 - manager.py(49) - INFO: charged - Jane: $500
+Charge Jane $800
+2019-08-31 21:41:53,328 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Jane', params=[800])
+2019-08-31 21:41:53,328 - manager.py(44) - INFO: charging - Jane: $800
+2019-08-31 21:41:53,328 - creditcard.py(35) - WARNING: Charging $800 to balance $500 is exceeded the limit: $1000
+Charge Evan $7
+2019-08-31 21:41:53,328 - events.py(82) - DEBUG: ChargeEvent(kind='Charge', name='Evan', params=[7])
+2019-08-31 21:41:53,328 - manager.py(44) - INFO: charging - Evan: $7
+2019-08-31 21:41:53,328 - manager.py(49) - INFO: charged - Evan: $7
+Credit Evan $100
+2019-08-31 21:41:53,328 - events.py(90) - DEBUG: CreditEvent(kind='Credit', name='Evan', params=[100])
+2019-08-31 21:41:53,328 - manager.py(60) - INFO: crediting - Evan: $100
+2019-08-31 21:41:53,328 - manager.py(66) - INFO: creditied- Evan: $-93
+Credit Daniel $200
+2019-08-31 21:41:53,329 - events.py(90) - DEBUG: CreditEvent(kind='Credit', name='Daniel', params=[200])
+2019-08-31 21:41:53,329 - manager.py(60) - INFO: crediting - Daniel: $200
+2019-08-31 21:41:53,329 - creditcard.py(45) - WARNING: Invalid card number: 1234567890123456
+Jane: $500
 Evan: $-93
 Daniel: error
+
+
 ```
 
 ## 주요 클래스

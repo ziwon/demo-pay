@@ -14,7 +14,8 @@ def cli(payloads: click.File):
 
     for payload in payloads:
         message = payload.decode("utf-8").strip()
+        print(message)
         event = EventFactory.create(message, manager)
         event.handle()
 
-    LOG.debug(f"output: {manager.status()}")
+    print(manager.status())
